@@ -15,7 +15,7 @@ public class UserController {
 
     @PostMapping("/add")
     public User save(@RequestBody User user) {
-        return userService.save(user);
+        return userService.saveUser(user);
     }
 
     @GetMapping("/get")
@@ -25,11 +25,11 @@ public class UserController {
 
     @GetMapping("/get/{id}")
     public User getUser(@PathVariable String id) {
-        return userService.getUserById(id);
+        return userService.getUser(id);
     }
 
     @DeleteMapping("/delete/{id}")
     public String deleteUserById(@PathVariable String id) {
-        return userService.deleteUserById(id) ;
+        return userService.deleteUser(id) ;
     }
 }

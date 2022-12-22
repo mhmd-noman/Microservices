@@ -2,6 +2,9 @@ package com.pmis.user.service;
 
 import com.pmis.user.service.exceptions.UserNotFoundException;
 import com.pmis.user.service.models.User;
+import com.pmis.user.service.repository.UserRepository;
+import com.pmis.user.service.utils.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,33 +13,39 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
-    List<User> users = new ArrayList<>();
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public User save(User user) {
+    public User saveUser(User user) {
         if (null == user.getId() || user.getId().isEmpty()) {
             user.setId(UUID.randomUUID().toString());
         }
-        users.add(user);
+        userRepository.save(user);
         return user;
     }
 
     @Override
     public List<User> getUsers() {
+        List<User> users = userRepository.findAll();
+        if (Utils.ifEmptyList(users)){
+            throw new UserNotFoundException("No User found!");
+        }
         return users;
     }
 
     @Override
-    public User getUserById(String id) {
-        return users.stream()
-                .filter(user -> user.getId().equalsIgnoreCase(id))
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("User not found with Id: "+ id));
+    public User getUser(String id) {
+        User user = userRepository.findById(id).get();
+        if (null == user){
+            throw new UserNotFoundException("User not found with Id: "+ id);
+        }
+        return user;
     }
 
     @Override
-    public String deleteUserById(String id) {
-        User user = users.stream().filter(u->u.getId().equalsIgnoreCase(id)).findFirst().get();
-        users.remove(user);
-        return "User is deleted with Id: ["+ id+ "]";
+    public String deleteUser(String id) {
+        userRepository.deleteById(id);
+        return "User is deleted with Id: [\"+ id+ \"]";
     }
 }
