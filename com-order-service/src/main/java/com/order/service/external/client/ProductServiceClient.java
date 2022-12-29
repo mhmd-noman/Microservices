@@ -1,7 +1,9 @@
 package com.order.service.external.client;
 
+import com.order.service.external.response.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,4 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ProductServiceClient {
     @PutMapping(path = "/reduceQuantity/{id}")
     ResponseEntity<Void> reduceQuantity(@PathVariable("id") long productId, @RequestParam long quantity);
+
+    @GetMapping(path = "/get/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id);
 }

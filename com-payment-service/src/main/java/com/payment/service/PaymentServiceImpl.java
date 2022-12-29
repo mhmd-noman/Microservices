@@ -22,4 +22,10 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Transaction completed with Reference Id: {}", transId);
         return 0;
     }
+
+    @Override
+    public TransactionDetails getPaymentDetailsByOrderId(String orderId) {
+        log.info("Going to fetch the detail of the payment using orderId: {}", orderId);
+        return transactionDetailsRepository.findByOrderId(Long.valueOf(orderId));
+    }
 }

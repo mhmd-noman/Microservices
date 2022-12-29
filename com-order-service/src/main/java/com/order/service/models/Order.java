@@ -1,5 +1,7 @@
 package com.order.service.models;
 
+import com.order.service.external.request.TransactionDetails;
+import com.order.service.external.response.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,4 +31,8 @@ public class Order {
     @Column(name = "total_amount")
     private long amount;
     private PaymentMode paymentMode;
+    @Transient
+    private Product product;
+    @Transient
+    private TransactionDetails transactionDetails;
 }
